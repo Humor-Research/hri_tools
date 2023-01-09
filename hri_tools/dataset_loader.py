@@ -72,7 +72,7 @@ class HumorDataset:
         for i in range(len(texts)):
             statistics.append(
                 len(
-                    word_tokenize(texts[i])
+                    word_tokenize(str(texts[i]))
                 )
             )
         
