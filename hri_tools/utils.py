@@ -4,7 +4,11 @@ from zipfile import ZipFile
 
 import gdown
 
-SUPPORTED_DATASETS = ['pun_of_the_day', 'one_liners', 'reddit_jokes_last_laught', 'short_jokes', 'funlines', 'human_microedit']
+SUPPORTED_DATASETS = ['pun_of_the_day', 'one_liners', 'reddit_jokes_last_laught',
+                      'short_jokes', 'funlines_v1', 'human_microedit_v1',
+                      'funlines_v2', 'human_microedit_v2', 'unfun_me',
+                      'semeval_2021_task_7', 'semeval_2017_task_7', 'reddit_jokes_github'
+                      ]
 
 USER_HOME = os.getenv('HOME')
 DATA_PATH = os.path.join(USER_HOME, 'hri_tools_data/')
