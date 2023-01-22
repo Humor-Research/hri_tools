@@ -1,5 +1,7 @@
 import os
 import json
+import re
+from collections import Counter
 
 import pandas as pd
 import numpy as np
@@ -25,6 +27,8 @@ class HumorDataset:
         self.first_mention = None
         self.other_mention = None
         self.year = None
+        self._dataset_preprocessed = False
+        self._vocab_built = False
 
     def _load_dataframe(self):
         self.df = pd.read_csv(
@@ -145,3 +149,45 @@ class HumorDataset:
             Other mentions paper: {self.other_mention}
         '''
         return about
+    
+    def _to_lower_case_rows(self):
+        self.df['text_preprocessed'] = self.df['text'].apply(
+            lambda row: str(row).lower()
+        ) 
+
+    def _remove_symbols_from_rows(self):
+        # saving only letters and digits
+        self.df['text_preprocessed'] = self.df['text_preprocessed'].apply(
+            lambda row: re.sub(pattern='[^\w ]', repl='', string=row)
+        )
+    
+    def _word_tokenize_rows(self):
+        self.df['text_preprocessed'] = self.df['text_preprocessed'].apply(
+            lambda row: word_tokenize(row)
+        )
+
+    def run_preprocessing(self):
+        self._to_lower_case_rows()
+        self._remove_symbols_from_rows()
+        self._word_tokenize_rows()
+        self._dataset_preprocessed = True
+
+    def build_vocab(self):
+
+        if not(self.is_preprocessed()):
+            raise ValueError('You shoud preprocessing data')
+
+        all_words = list()
+        for text in self.df['text_preprocessed']:
+            all_words += text
+
+        self.vocab = dict(Counter(all_words))
+        self.vocab_size = len(self.vocab)
+        self.non_unique_words = sum([w[1] for w in self.vocab.items()])
+        self._vocab_built = True
+    
+    def is_preprocessed(self):
+        return self._dataset_preprocessed
+    
+    def is_vocab_built(self):
+        return self._vocab_built
