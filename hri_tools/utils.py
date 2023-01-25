@@ -57,22 +57,22 @@ def calc_divergence(first_dataset, second_dataset) -> float:
         edited_second_vocab = copy.deepcopy(second_dataset.vocab)
         non_unique_words_second = second_dataset.non_unique_words
         
-        for k in edited_second_vocab.keys():
-            edited_second_vocab[k] = edited_second_vocab[k] / non_unique_words_second
-        
         for k in elements_to_add_for_second:
-            edited_second_vocab[k] = 0.33 / non_unique_words_second
+            edited_second_vocab[k] = 0
+        
+        for k in edited_second_vocab.keys():
+            edited_second_vocab[k] = (edited_second_vocab[k] + 1/3) / (non_unique_words_second + 1/3 * len(edited_second_vocab))
 
         first_vocab = copy.deepcopy(first_dataset.vocab)
         non_unique_words_first = first_dataset.non_unique_words
 
         for k in first_vocab.keys():
-            first_vocab[k] = first_vocab[k] / non_unique_words_first
+            first_vocab[k] = (first_vocab[k] + 1/3) / (non_unique_words_first + 1/3 * len(first_vocab))
         
         result = 0
         for k in first_vocab.keys():
             result += first_vocab[k] * np.log2(first_vocab[k] / edited_second_vocab[k])
-        
+
         return result
     
     def _build_middle_vocab(first_dataset, second_dataset):
@@ -87,20 +87,20 @@ def calc_divergence(first_dataset, second_dataset) -> float:
         edited_second_vocab = copy.deepcopy(second_dataset.vocab)
         non_unique_words_second = second_dataset.non_unique_words
         
-        for k in edited_second_vocab.keys():
-            edited_second_vocab[k] = edited_second_vocab[k] / non_unique_words_second
-        
         for k in elements_to_add_for_second:
-            edited_second_vocab[k] = 0.33 / non_unique_words_second
+            edited_second_vocab[k] = 0
+        
+        for k in edited_second_vocab.keys():
+            edited_second_vocab[k] = (edited_second_vocab[k] + 1/3) / (non_unique_words_second + 1/3 * len(edited_second_vocab))
 
         edited_first_vocab = copy.deepcopy(first_dataset.vocab)
         non_unique_words_first = first_dataset.non_unique_words
 
-        for k in edited_first_vocab.keys():
-            edited_first_vocab[k] = edited_first_vocab[k] / non_unique_words_first
-        
         for k in elements_to_add_for_first:
-            edited_first_vocab[k] = 0.33 / non_unique_words_first
+            edited_first_vocab[k] = 0
+        
+        for k in edited_first_vocab.keys():
+            edited_first_vocab[k] = (edited_first_vocab[k] + 1/3) / (non_unique_words_first + 1/3 * len(edited_first_vocab))
         
         result = dict()
         for k in edited_first_vocab.keys():
@@ -126,3 +126,74 @@ def calc_divergence(first_dataset, second_dataset) -> float:
 
 
 
+
+
+def calc_divergence_between_target(first_dataset) -> float:
+    '''
+    Function for calculate different divergence true and false set
+    '''
+
+    second_dataset = copy.deepcopy(first_dataset)
+
+    first_dataset.df = first_dataset.df[first_dataset.df['label']==1]
+
+    second_dataset.df = second_dataset.df[second_dataset.df['label']==0]
+
+    first_dataset.run_preprocessing()
+    second_dataset.run_preprocessing()
+
+    first_dataset.build_vocab()
+    second_dataset.build_vocab()
+
+
+    def _non_symmetric_kl_divergence(first_dataset, second_dataset):
+        
+        elements_to_add_for_second = list(
+            set(first_dataset.vocab.keys()) - set(second_dataset.vocab.keys())
+        )
+
+        edited_second_vocab = copy.deepcopy(second_dataset.vocab)
+        non_unique_words_second = second_dataset.non_unique_words
+        
+        for k in elements_to_add_for_second:
+            edited_second_vocab[k] = 0
+        
+        for k in edited_second_vocab.keys():
+            edited_second_vocab[k] = (edited_second_vocab[k] + 1/3) / (non_unique_words_second + 1/3 * len(edited_second_vocab))
+
+        first_vocab = copy.deepcopy(first_dataset.vocab)
+        non_unique_words_first = first_dataset.non_unique_words
+
+        for k in first_vocab.keys():
+            first_vocab[k] = (first_vocab[k] + 1/3) / (non_unique_words_first + 1/3 * len(first_vocab))
+        
+        result = 0
+        for k in first_vocab.keys():
+            result += first_vocab[k] * np.log2(first_vocab[k] / edited_second_vocab[k])
+
+        return result
+
+    symmetric_kl = _non_symmetric_kl_divergence(first_dataset, second_dataset) + _non_symmetric_kl_divergence(second_dataset, first_dataset)
+    
+    return symmetric_kl
+
+
+
+def calc_vocab_for_labels(first_dataset):
+
+    second_dataset = copy.deepcopy(first_dataset)
+
+    first_dataset.df = first_dataset.df[first_dataset.df['label']==1]
+
+    second_dataset.df = second_dataset.df[second_dataset.df['label']==0]
+
+    first_dataset.run_preprocessing()
+    second_dataset.run_preprocessing()
+
+    first_dataset.build_vocab()
+    second_dataset.build_vocab()
+
+    print(first_dataset.name)
+    print('positive target', first_dataset.vocab_size, first_dataset.non_unique_words, first_dataset.vocab_size/first_dataset.non_unique_words)
+    print('negative target', second_dataset.vocab_size, second_dataset.non_unique_words, second_dataset.vocab_size/second_dataset.non_unique_words)
+    return ''

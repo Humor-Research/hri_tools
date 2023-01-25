@@ -36,6 +36,23 @@ class HumorDataset:
             index_col=0
         )
 
+        self.train_df = pd.read_csv(
+            os.path.join(os.getenv('HOME'), DATA_PATH, 'datasets', f'{self.name}', 'files', 'train.csv'),
+            index_col=0
+        )
+
+        self.valid_df = pd.read_csv(
+            os.path.join(os.getenv('HOME'), DATA_PATH, 'datasets', f'{self.name}', 'files', 'valid.csv'),
+            index_col=0
+        )
+
+        self.test_df = pd.read_csv(
+            os.path.join(os.getenv('HOME'), DATA_PATH, 'datasets', f'{self.name}', 'files', 'test.csv'),
+            index_col=0
+        )
+
+        assert self.df.shape[0] == self.train_df.shape[0] + self.valid_df.shape[0] + self.test_df.shape[0]
+
     def _set_full_name(self):
         self.full_name = self.config['full_name']
 
@@ -153,6 +170,18 @@ class HumorDataset:
     def _to_lower_case_rows(self):
         self.df['text_preprocessed'] = self.df['text'].apply(
             lambda row: str(row).lower()
+        )
+
+        self.train_df['text_preprocessed'] = self.train_df['text'].apply(
+            lambda row: str(row).lower()
+        )
+
+        self.test_df['text_preprocessed'] = self.test_df['text'].apply(
+            lambda row: str(row).lower()
+        )
+
+        self.valid_df['text_preprocessed'] = self.valid_df['text'].apply(
+            lambda row: str(row).lower()
         ) 
 
     def _remove_symbols_from_rows(self):
@@ -160,9 +189,33 @@ class HumorDataset:
         self.df['text_preprocessed'] = self.df['text_preprocessed'].apply(
             lambda row: re.sub(pattern='[^\w ]', repl='', string=row)
         )
+
+        self.train_df['text_preprocessed'] = self.train_df['text_preprocessed'].apply(
+            lambda row: re.sub(pattern='[^\w ]', repl='', string=row)
+        )
+
+        self.test_df['text_preprocessed'] = self.test_df['text_preprocessed'].apply(
+            lambda row: re.sub(pattern='[^\w ]', repl='', string=row)
+        )
+
+        self.valid_df['text_preprocessed'] = self.valid_df['text_preprocessed'].apply(
+            lambda row: re.sub(pattern='[^\w ]', repl='', string=row)
+        )
     
     def _word_tokenize_rows(self):
         self.df['text_preprocessed'] = self.df['text_preprocessed'].apply(
+            lambda row: word_tokenize(row)
+        )
+
+        self.train_df['text_preprocessed'] = self.train_df['text_preprocessed'].apply(
+            lambda row: word_tokenize(row)
+        )
+
+        self.test_df['text_preprocessed'] = self.test_df['text_preprocessed'].apply(
+            lambda row: word_tokenize(row)
+        )
+
+        self.valid_df['text_preprocessed'] = self.valid_df['text_preprocessed'].apply(
             lambda row: word_tokenize(row)
         )
 
@@ -191,3 +244,12 @@ class HumorDataset:
     
     def is_vocab_built(self):
         return self._vocab_built
+
+    def get_train(self):
+        return self.train_df
+
+    def get_test(self):
+        return self.test_df
+
+    def get_valid(self):
+        return self.valid_df
