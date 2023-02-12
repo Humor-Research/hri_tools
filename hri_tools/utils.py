@@ -16,7 +16,7 @@ class MidDataset:
 SUPPORTED_DATASETS = ['pun_of_the_day', 'one_liners', 'reddit_jokes_last_laught',
                       'short_jokes', 'funlines_v1', 'human_microedit_v1',
                       'funlines_v2', 'human_microedit_v2', 'unfun_me',
-                      'semeval_2021_task_7', 'semeval_2017_task_7', 'reddit_jokes_github'
+                      'semeval_2021_task_7', 'semeval_2017_task_7', 'the_naughtyformer'
                       ]
 
 USER_HOME = os.getenv('HOME')
@@ -115,9 +115,11 @@ def calc_divergence(first_dataset, second_dataset) -> float:
         raise ValueError('You shoud preprocesse!!!')
 
     symmetric_kl = _non_symmetric_kl_divergence(first_dataset, second_dataset) + _non_symmetric_kl_divergence(second_dataset, first_dataset)
-    m = _build_middle_vocab(first_dataset, second_dataset)
-    middle_dataset = MidDataset(m)
-    js_divergence = 0.5 * _non_symmetric_kl_divergence(first_dataset, middle_dataset) + 0.5 * _non_symmetric_kl_divergence(second_dataset, middle_dataset)
+    js_divergence = None
+    
+    # m = _build_middle_vocab(first_dataset, second_dataset)
+    # middle_dataset = MidDataset(m)
+    # js_divergence = 0.5 * _non_symmetric_kl_divergence(first_dataset, middle_dataset) + 0.5 * _non_symmetric_kl_divergence(second_dataset, middle_dataset)
 
     return {
         'Symmetrised KL divergence': symmetric_kl,
