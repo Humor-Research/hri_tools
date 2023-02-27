@@ -51,7 +51,8 @@ class HumorDataset:
             index_col=0
         )
 
-        assert self.df.shape[0] == self.train_df.shape[0] + self.valid_df.shape[0] + self.test_df.shape[0]
+        # Skipping this assertion because duplicates removed from original data 
+        # assert self.df.shape[0] == self.train_df.shape[0] + self.valid_df.shape[0] + self.test_df.shape[0]
 
     def _set_full_name(self):
         self.full_name = self.config['full_name']
