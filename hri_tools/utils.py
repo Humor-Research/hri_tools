@@ -16,14 +16,32 @@ class MidDataset:
 SUPPORTED_DATASETS = ['pun_of_the_day', 'one_liners', 'reddit_jokes_last_laught',
                       'short_jokes', 'funlines_v1', 'human_microedit_v1',
                       'funlines_v2', 'human_microedit_v2', 'unfun_me',
-                      'semeval_2021_task_7', 'semeval_2017_task_7', 'the_naughtyformer'
+                      'semeval_2021_task_7', 'semeval_2017_task_7', 'the_naughtyformer',
+                      'funlines_and_human_microedit_paper_2023', 'onion_or_not'
                       ]
+
+not_used_in_paper_2023 = ['funlines_v1', 'funlines_v2', 'human_microedit_v1',
+                          'human_microedit_v2'
+                         ]
+
+HRI_PAPER_2023_DATASETS = list(
+    set(SUPPORTED_DATASETS).difference(set(not_used_in_paper_2023))
+)
+
+SUPPORTED_DATASETS = sorted(SUPPORTED_DATASETS)
+HRI_PAPER_2023_DATASETS = sorted(HRI_PAPER_2023_DATASETS)
+
+# Simple logic of moving to the end of the largest sets
+SUPPORTED_DATASETS.append(SUPPORTED_DATASETS.pop(SUPPORTED_DATASETS.index('short_jokes')))
+SUPPORTED_DATASETS.append(SUPPORTED_DATASETS.pop(SUPPORTED_DATASETS.index('the_naughtyformer')))
+HRI_PAPER_2023_DATASETS.append(HRI_PAPER_2023_DATASETS.pop(HRI_PAPER_2023_DATASETS.index('short_jokes')))
+HRI_PAPER_2023_DATASETS.append(HRI_PAPER_2023_DATASETS.pop(HRI_PAPER_2023_DATASETS.index('the_naughtyformer')))
 
 USER_HOME = os.getenv('HOME')
 DATA_PATH = os.path.join(USER_HOME, 'hri_tools_data/')
 
 
-def downlaod():
+def download():
     
     with tempfile.TemporaryDirectory() as tmpdirname:
         
