@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='hri_tools',
-    version='0.0.8',
+    version='0.0.9',
     description='A toos for working with datasets',
     packages=['hri_tools'],
     author='Alexander Baranov',

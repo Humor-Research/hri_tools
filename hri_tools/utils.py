@@ -17,11 +17,11 @@ SUPPORTED_DATASETS = ['pun_of_the_day', 'one_liners', 'reddit_jokes_last_laught'
                       'short_jokes', 'funlines_v1', 'human_microedit_v1',
                       'funlines_v2', 'human_microedit_v2', 'unfun_me',
                       'semeval_2021_task_7', 'semeval_2017_task_7', 'the_naughtyformer',
-                      'funlines_and_human_microedit_paper_2023', 'onion_or_not'
+                      'funlines_and_human_microedit_paper_2023', 'onion_or_not', 'meta_dataset'
                       ]
 
 not_used_in_paper_2023 = ['funlines_v1', 'funlines_v2', 'human_microedit_v1',
-                          'human_microedit_v2'
+                          'human_microedit_v2', 'meta_dataset'
                          ]
 
 HRI_PAPER_2023_DATASETS = list(
@@ -214,6 +214,8 @@ def calc_vocab_for_labels(first_dataset):
     second_dataset.build_vocab()
 
     print(first_dataset.name)
-    print('positive target', first_dataset.vocab_size, first_dataset.non_unique_words, first_dataset.vocab_size/first_dataset.non_unique_words)
-    print('negative target', second_dataset.vocab_size, second_dataset.non_unique_words, second_dataset.vocab_size/second_dataset.non_unique_words)
+    print('positive target')
+    print("vocab_size", first_dataset.vocab_size, "non_unique_words", first_dataset.non_unique_words, "token ratio", first_dataset.vocab_size/first_dataset.non_unique_words)
+    print('negative target')
+    print("vocab_size", second_dataset.vocab_size, "non_unique_words", second_dataset.non_unique_words, "token ratio", second_dataset.vocab_size/second_dataset.non_unique_words)
     return ''
