@@ -3,6 +3,7 @@ import json
 import re
 from collections import Counter
 from abc import ABC, abstractmethod
+import unicodedata
 
 import pandas as pd
 import numpy as np
@@ -179,6 +180,26 @@ class AbstractHumorDataset(ABC):
         ) 
 
     def _remove_symbols_from_rows(self):
+
+        # remove non-asci
+
+        self.df['text_preprocessed'] = self.df['text_preprocessed'].apply(
+            lambda row: unicodedata.normalize('NFKD', row).encode('ascii', 'ignore').decode()
+        )
+
+        self.train_df['text_preprocessed'] = self.train_df['text_preprocessed'].apply(
+            lambda row: unicodedata.normalize('NFKD', row).encode('ascii', 'ignore').decode()
+        )
+
+        self.test_df['text_preprocessed'] = self.test_df['text_preprocessed'].apply(
+            lambda row: unicodedata.normalize('NFKD', row).encode('ascii', 'ignore').decode()
+        )
+
+        self.valid_df['text_preprocessed'] = self.valid_df['text_preprocessed'].apply(
+            lambda row: unicodedata.normalize('NFKD', row).encode('ascii', 'ignore').decode()
+        )
+
+
         # saving only letters and digits
         self.df['text_preprocessed'] = self.df['text_preprocessed'].apply(
             lambda row: re.sub(pattern='[^\w ]', repl='', string=row)
