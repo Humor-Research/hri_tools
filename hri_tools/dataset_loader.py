@@ -373,10 +373,16 @@ class MetaHumorDatasetCreator:
             hd_test = hd.get_test()
             hd_valid = hd.get_valid()
 
+            is_allowed_label_param_exist = param.get("allowed_labels", False)
+            if is_allowed_label_param_exist:
+                hd_train= hd_train[hd_train["label"].isin(param["allowed_labels"])]
+                hd_test = hd_test[hd_test["label"].isin(param["allowed_labels"])]
+                hd_valid = hd_valid[hd_valid["label"].isin(param["allowed_labels"])]
+
             if param["drop_which_dup"]:
                 if "is_duplicated" in hd_train.columns.tolist():
                     hd_train = hd_train[~hd_train["is_duplicated"]]
-
+            
             if param["sample_from_train"] is not None:
                 hd_train = hd_train.sample(param["sample_from_train"], random_state=self.random_state)
             

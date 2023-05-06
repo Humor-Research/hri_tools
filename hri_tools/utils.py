@@ -5,6 +5,7 @@ import copy
 
 import gdown
 import numpy as np
+import requests
 
 class MidDataset:
 
@@ -39,6 +40,8 @@ HRI_PAPER_2023_DATASETS.append(HRI_PAPER_2023_DATASETS.pop(HRI_PAPER_2023_DATASE
 
 USER_HOME = os.getenv('HOME')
 DATA_PATH = os.path.join(USER_HOME, 'hri_tools_data/')
+
+BAD_WORDS_URL = "https://raw.githubusercontent.com/LDNOOBW/List-of-Dirty-Naughty-Obscene-and-Otherwise-Bad-Words/master/en"
 
 
 def download():
@@ -219,3 +222,8 @@ def calc_vocab_for_labels(first_dataset):
     print('negative target')
     print("vocab_size", second_dataset.vocab_size, "non_unique_words", second_dataset.non_unique_words, "token ratio", second_dataset.vocab_size/second_dataset.non_unique_words)
     return ''
+
+
+def get_bad_words():
+    resp = requests.get(BAD_WORDS_URL)
+    return set(resp.content.decode().split("\n")[:-1])
