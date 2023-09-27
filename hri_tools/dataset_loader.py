@@ -420,5 +420,16 @@ class MetaHumorDatasetCreator:
         return result_meta_dataset
 
 
+class ConversationalDataset:
+    
+    def __init__(self, name) -> None:
+        self.df = pd.read_csv(
+            os.path.join(os.getenv('HOME'), DATA_PATH, 'conversational_dataset', f'{name}.csv'),
+            index_col=0
+        )
+        self.name = name
+
+    def get_data(self):
+        return self.df.copy()
     
 
