@@ -18,8 +18,10 @@ SUPPORTED_DATASETS = ['pun_of_the_day', 'one_liners', 'reddit_jokes_last_laught'
                       'short_jokes', 'funlines_v1', 'human_microedit_v1',
                       'funlines_v2', 'human_microedit_v2', 'unfun_me',
                       'semeval_2021_task_7', 'semeval_2017_task_7', 'the_naughtyformer',
-                      'funlines_and_human_microedit_paper_2023', 'onion_or_not', 'meta_dataset'
+                      'funlines_and_human_microedit_paper_2023', 'onion_or_not', 'meta_dataset', 'comb'
                       ]
+
+SUPPORTED_CONVERSATIONAL_DATASETS = ['alice', 'curiousity', 'fig_qa_end', 'fig_qa_start', 'friends', 'irony', 'three_men', 'walking_dead']
 
 not_used_in_paper_2023 = ['funlines_v1', 'funlines_v2', 'human_microedit_v1',
                           'human_microedit_v2', 'meta_dataset'
