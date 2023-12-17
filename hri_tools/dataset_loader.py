@@ -425,7 +425,7 @@ class ConversationalDataset:
     def __init__(self, name) -> None:
         self.df = pd.read_csv(
             os.path.join(os.getenv('HOME'), DATA_PATH, 'conversational_dataset', f'{name}.csv'),
-            index_col=0
+            index_col=None
         )
         self.name = name
 
