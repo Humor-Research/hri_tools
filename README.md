@@ -21,9 +21,20 @@ Attention! In the public dataset, the set of 16000 one-liners has been replaced 
 ## Paper and citation
 Data preprocessing and a detailed description of the datasets is available in the article. Please cite our article as follows:
 ```bibtex
-@inproceedings{JokeTwice2023,
-   title={You Told Me That Joke Twice: A Systematic Investigation of Transferability and Robustness of Humor Detection Models},
-   author={Alexander Baranov, Vladimir Kniazhevsky and Pavel Braslavski},
-   booktitle={Empirical Methods in Natural Language Processing (EMNLP)},
-   year={2023}
+@inproceedings{baranov-etal-2023-told,
+    title = "You Told Me That Joke Twice: A Systematic Investigation of Transferability and Robustness of Humor Detection Models",
+    author = "Baranov, Alexander  and
+      Kniazhevsky, Vladimir  and
+      Braslavski, Pavel",
+    editor = "Bouamor, Houda  and
+      Pino, Juan  and
+      Bali, Kalika",
+    booktitle = "Proceedings of the 2023 Conference on Empirical Methods in Natural Language Processing",
+    month = dec,
+    year = "2023",
+    address = "Singapore",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/2023.emnlp-main.845",
+    doi = "10.18653/v1/2023.emnlp-main.845",
+    pages = "13701--13715",
 }
